@@ -16,18 +16,8 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
-interface User {
-  full_name: string;
-  email: string;
-}
-
-interface LayoutProps {
-  children: React.ReactNode;
-  currentPageName: string;
-}
-
-export default function Layout({ children, currentPageName }: LayoutProps) {
-  const [user, setUser] = useState<User | null>(null);
+export default function Layout({ children, currentPageName }) {
+  const [user, setUser] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
