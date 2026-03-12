@@ -17,13 +17,12 @@ export const qualityApi = {
         .limit(500)
     ),
 
-  getUser: () =>
-    handle(
-      supabase
-        .from('user')
-        .select('*')
-        .single()
-    ),
+  // Usuário autenticado (Supabase Auth)
+  getCurrentUser: async () => {
+    const { data, error } = await supabase.auth.getUser();
+    if (error) throw error;
+    return data.user;
+  },
 
   createInspecao: (data) =>
     handle(

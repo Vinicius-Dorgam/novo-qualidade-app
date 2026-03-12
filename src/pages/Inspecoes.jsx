@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { qualityApi } from '@/api/qualityApi';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createPageUrl } from '@/utils';
 import { Link, useNavigate } from 'react-router-dom';
@@ -53,16 +53,16 @@ export default function Inspecoes() {
 
   const { data: inspecoes = [], isLoading } = useQuery({
     queryKey: ['inspecoes'],
-    queryFn: () => base44.entities.Inspecao.list('-created_date', 500)
+    queryFn: qualityApi.listInspecoes
   });
 
   const { data: user } = useQuery({
     queryKey: ['user'],
-    queryFn: () => base44.auth.me()
+    queryFn: qualityApi.getCurrentUser
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Inspecao.create(data),
+    mutationFn: (data) => qualityApi.createInspecao(data),
     onSuccess: (newInsp) => {
       queryClient.invalidateQueries({ queryKey: ['inspecoes'] });
       setShowNewModal(false);
