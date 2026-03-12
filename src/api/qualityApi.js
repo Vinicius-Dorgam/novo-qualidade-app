@@ -17,6 +17,24 @@ export const qualityApi = {
         .limit(500)
     ),
 
+  listBobinasDashboard: () =>
+    handle(
+      supabase
+        .from('bobina')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(2000)
+    ),
+
+  listPlanosAcao: () =>
+    handle(
+      supabase
+        .from('plano_acao')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(500)
+    ),
+
   // Usuário autenticado (Supabase Auth)
   getCurrentUser: async () => {
     const { data, error } = await supabase.auth.getUser();

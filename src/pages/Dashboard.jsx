@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { base44 } from '@/api/base44Client';
+import { qualityApi } from '@/api/qualityApi';
 import { useQuery } from '@tanstack/react-query';
 import { 
   ClipboardList, 
@@ -33,23 +33,27 @@ const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6'];
 export default function Dashboard() {
   const [periodo, setPeriodo] = useState('30');
 
-  const { data: inspecoes = [] } = useQuery({
+  const { data: inspecoesData } = useQuery({
     queryKey: ['inspecoes'],
-    queryFn: () => base44.entities.Inspecao.list('-created_date', 500),
+    queryFn: qualityApi.listInspecoes,
     staleTime: 60_000
   });
 
-  const { data: bobinas = [] } = useQuery({
+  const { data: bobinasData } = useQuery({
     queryKey: ['bobinas-dashboard'],
-    queryFn: () => base44.entities.Bobina.list('-created_date', 2000),
+    queryFn: qualityApi.listBobinasDashboard,
     staleTime: 60_000
   });
 
-  const { data: planosAcao = [] } = useQuery({
+  const { data: planosAcaoData } = useQuery({
     queryKey: ['planos-acao'],
-    queryFn: () => base44.entities.PlanoAcao.list('-created_date', 500),
+    queryFn: qualityApi.listPlanosAcao,
     staleTime: 60_000
   });
+
+  const inspecoes = Array.isArray(inspecoesData) ? inspecoesData : [];
+  const bobinas = Array.isArray(bobinasData) ? bobinasData : [];
+  const planosAcao = Array.isArray(planosAcaoData) ? planosAcaoData : [];
 
   const stats = useMemo(() => {
     const totalBobinas = bobinas.length;
