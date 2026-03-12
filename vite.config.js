@@ -1,10 +1,20 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
+import { fileURLToPath } from 'node:url'
+import { resolve } from 'node:path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = resolve(__filename, '..')
 
 // https://vite.dev/config/
 export default defineConfig({
   logLevel: 'error', // Suppress warnings, only show errors
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src')
+    }
+  },
   plugins: [
     react(),
     VitePWA({
